@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.login_button:
                 Intent loginIntent = new Intent(this, LoginActivity.class);
                 startActivity(loginIntent);
+                break;
             case R.id.gallery:
                 Intent galleryIntent = new Intent(this, GalleryActivity.class);
                 startActivity(galleryIntent);
