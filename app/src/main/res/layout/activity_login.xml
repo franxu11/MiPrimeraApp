@@ -48,6 +48,7 @@
         android:layout_alignBottom="@id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:onClick="onCancel"
         android:text="Cancel"/>
 
     <Button
@@ -56,6 +57,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:onClick="doRegister"
         android:text="Register"/>
 
 </RelativeLayout>

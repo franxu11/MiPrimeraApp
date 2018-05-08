@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">eSports</string>
 
+    <!-- Login Activity -->
+    <string name="username_error">Usuario no puede estar vacío.</string>
+    <string name="password_error">La contraseña no puede ser vacía.</string>
+
     <!-- Profile Activity -->
     <string name="username">Username</string>
     <string name="email">Email</string>
