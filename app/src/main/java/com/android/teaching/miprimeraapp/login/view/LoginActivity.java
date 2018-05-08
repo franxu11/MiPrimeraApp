@@ -3,6 +3,7 @@ package com.android.teaching.miprimeraapp.login.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
@@ -11,7 +12,7 @@ import android.widget.EditText;
 import com.android.teaching.miprimeraapp.ProfileActivity;
 import com.android.teaching.miprimeraapp.R;
 
-public class LoginActivity extends Activity {
+public class LoginActivity extends AppCompatActivity {
 
     private EditText usernameEditText;
     private EditText passwordEditText;
