@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.android.teaching.miprimeraapp.gallery.GalleryActivity;
 import com.android.teaching.miprimeraapp.login.view.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,11 +21,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.segunda_activity:
-                Intent intent = new Intent(this, ProfileActivity.class);
-                intent.putExtra("dinero", 200);
-                startActivity(intent);
-                break;
             case R.id.abrir_google:
                 Intent intentGoogle = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
                 startActivity(intentGoogle);
@@ -32,6 +28,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.login_button:
                 Intent loginIntent = new Intent(this, LoginActivity.class);
                 startActivity(loginIntent);
+            case R.id.gallery:
+                Intent galleryIntent = new Intent(this, GalleryActivity.class);
+                startActivity(galleryIntent);
+                break;
         }
     }
 

@@ -19,6 +19,7 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".GameDetailActivity" />
         <activity android:name=".login.view.LoginActivity" />
+        <activity android:name=".gallery.GalleryActivity"></activity>
     </application>
 
 </manifest>
