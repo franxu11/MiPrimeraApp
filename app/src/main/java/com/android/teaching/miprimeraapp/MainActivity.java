@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.segunda_activity:
-                Intent intent = new Intent(this, SecondActivity.class);
+                Intent intent = new Intent(this, ProfileActivity.class);
                 intent.putExtra("dinero", 200);
                 startActivity(intent);
                 break;

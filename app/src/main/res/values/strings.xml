@@ -1,4 +1,13 @@
 <resources>
-    <string name="app_name">Hello</string>
+    <string name="app_name">eSports</string>
+
+    <!-- Profile Activity -->
+    <string name="username">Username</string>
+    <string name="email">Email</string>
     <string name="password">Password</string>
+
+    <!-- Games -->
+    <string name="overwatch_description">En una época de crisis global, un grupo de héroes formó un escuadrón internacional en aras de devolver la paz a un mundo devastado por la guerra. Este grupo se autodenominó OVERWATCH.
+Overwatch puso fin a la crisis y mantuvo la paz durante las décadas posteriores, dando pie a toda una era de exploración, innovación y descubrimiento.
+Ahora, con el mundo sumiéndose en el caos una vez más, héroes de antaño y de ahora acuden a la llamada. ¿Te apuntas?</string>
 </resources>
