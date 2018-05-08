@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import com.android.teaching.miprimeraapp.login.view.LoginActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -27,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intentGoogle = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
                 startActivity(intentGoogle);
                 break;
+            case R.id.login_button:
+                Intent loginIntent = new Intent(this, LoginActivity.class);
+                startActivity(loginIntent);
         }
     }
 

@@ -97,6 +97,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="guardarDatos"
+            android:drawableStart="@android:drawable/ic_menu_save"
             android:text="Save" />
 
         <Button
