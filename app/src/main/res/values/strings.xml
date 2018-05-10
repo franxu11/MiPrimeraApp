@@ -1,6 +1,19 @@
 <resources>
     <string name="app_name">eSports</string>
 
+    <!-- Activity titles -->
+    <string name="profile_activity">Profile</string>
+    <string name="list_activity">eSports</string>
+    <string name="login_activity">Login</string>
+
+    <!-- Dialog -->
+    <string name="dialog_title">Selecciona un color</string>
+    <string name="dialog_message">Estás seguro de querer borrar este usuario?</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="cancel">Cancelar</string>
+
+
     <!-- Login Activity -->
     <string name="username_error">Usuario no puede estar vacío.</string>
     <string name="password_error">La contraseña no puede ser vacía.</string>
