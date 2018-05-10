@@ -10,9 +10,12 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
         <activity android:name=".SecondActivity" />
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ProfileActivity"
+            android:parentActivityName=".login.view.LoginActivity"/>
         <activity android:name=".GameDetailActivity" />
-        <activity android:name=".login.view.LoginActivity" />
+        <activity android:name=".login.view.LoginActivity"
+            android:parentActivityName=".ListActivity"
+            android:label="Login"/>
         <activity android:name=".gallery.GalleryActivity"></activity>
         <activity android:name=".ListActivity">
             <intent-filter>

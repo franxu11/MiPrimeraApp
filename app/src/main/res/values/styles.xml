@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/dark_red</item>
     </style>
 
-    <style name="ToolbarTheme" parent="AppTheme">
+    <style name="ToolbarTheme" parent="Widget.AppCompat.ActionBar">
         <item name="android:textColorSecondary">@color/white</item>
     </style>
 
