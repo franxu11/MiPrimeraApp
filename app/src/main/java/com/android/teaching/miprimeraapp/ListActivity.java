@@ -1,10 +1,13 @@
 package com.android.teaching.miprimeraapp;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,27 +23,37 @@ import android.widget.Toast;
 
 import com.android.teaching.miprimeraapp.login.view.LoginActivity;
 
+import java.util.ArrayList;
+
 public class ListActivity extends AppCompatActivity {
 
-    String[] gameNames = { "Overwatch", "Leage of Legends"};
-    int[] gameIcons = { R.drawable.overwatch_icon, R.drawable.lol_icon};
+    ArrayList<String> gameNames = new ArrayList<String>();
+    ArrayList<Integer> gameIcons = new ArrayList<Integer>();
+
+    private MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+        gameNames.add("Overwatch");
+        gameNames.add("League of Legends");
+
+        gameIcons.add(R.drawable.overwatch_icon);
+        gameIcons.add(R.drawable.lol_icon);
+
         Toolbar myToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
         ListView listView = findViewById(R.id.list_view);
-        listView.setAdapter(new MyAdapter());
+        myAdapter = new MyAdapter();
+        listView.setAdapter(myAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(ListActivity.this, "Seleccionada posición " + position,
-                        Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -60,11 +73,27 @@ public class ListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater myInflater = getMenuInflater();
+        myInflater.inflate(R.menu.delete_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        // El usuario ha seleccionado un elemento del menu contextual
+        gameNames.remove(0);
+        gameIcons.remove(0);
+        myAdapter.notifyDataSetChanged();
+        return super.onContextItemSelected(item);
+    }
+
     private class MyAdapter extends BaseAdapter {
 
         @Override
         public int getCount() {
-            return gameNames.length;
+            return gameNames.size();
         }
 
         @Override
@@ -83,10 +112,10 @@ public class ListActivity extends AppCompatActivity {
             View rowView = inflater.inflate(R.layout.list_item, parent, false);
 
             ImageView icon = rowView.findViewById(R.id.image_view);
-            icon.setImageResource(gameIcons[position]);
+            icon.setImageResource(gameIcons.get(position));
 
             TextView textView = rowView.findViewById(R.id.text_view);
-            textView.setText(gameNames[position]);
+            textView.setText(gameNames.get(position));
 
             return rowView;
         }

@@ -1,17 +1,19 @@
 package com.android.teaching.miprimeraapp;
 
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -32,6 +34,15 @@ public class ProfileActivity extends AppCompatActivity {
         emailEditText = findViewById(R.id.email_edit_text);
         passwordEditText = findViewById(R.id.password_edit_text);
         ageEditText = findViewById(R.id.age_edit_text);
+        ageEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus) {
+                    // MOSTRAR DatePickerDialog
+
+                }
+            }
+        });
         radioButtonMale = findViewById(R.id.radio_button_male);
         radioButtonFemale = findViewById(R.id.radio_button_female);
 
@@ -85,7 +96,44 @@ public class ProfileActivity extends AppCompatActivity {
         saveInternal();
     }
 
+    /**
+     * Método que se ejecutará cuando el usuario pulse "Delete"
+     *
+     * @param view  -
+     */
+    public void onDelete(View view) {
+        // Mostrar un dialogo de confirmación
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        builder.setTitle(R.string.dialog_title);
+        builder.setMessage(R.string.dialog_message);
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // El usuario ha pulsado el botón "SÍ"
+                Toast.makeText(ProfileActivity.this, "SI QUIERO!",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // El usuario ha pulsado el botón "NO"
+                Toast.makeText(ProfileActivity.this, "NO QUIERO!",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+        builder.setNeutralButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // El usuario ha pulsado el botón "CANCELAR"
+                Toast.makeText(ProfileActivity.this, "Candelando...",
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+
+        builder.create().show();
+    }
 
 
 
