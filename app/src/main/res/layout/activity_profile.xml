@@ -72,15 +72,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Labels"
-                android:text="Age:"/>
+                android:text="Birthday:"/>
 
             <EditText
                 android:id="@+id/age_edit_text"
-                android:layout_width="100dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:hint="age"
-                android:inputType="number"
-                android:maxLength="3" />
+                android:hint="birthday"
+                android:inputType="number" />
         </LinearLayout>
 
         <RadioGroup

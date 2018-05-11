@@ -1,5 +1,6 @@
 package com.android.teaching.miprimeraapp;
 
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -11,9 +12,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Toast;
+
+import java.util.Calendar;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -39,7 +43,15 @@ public class ProfileActivity extends AppCompatActivity {
             public void onFocusChange(View v, boolean hasFocus) {
                 if (hasFocus) {
                     // MOSTRAR DatePickerDialog
-
+                    new DatePickerDialog(ProfileActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                            // Escribir la fecha en el edit text
+                            int anoActual = Calendar.getInstance().get(Calendar.YEAR);
+                            int edad = anoActual - year;
+                            ageEditText.setText(String.valueOf(edad));
+                        }
+                    }, 1980, 1, 1).show();
                 }
             }
         });
