@@ -21,6 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.teaching.miprimeraapp.interactors.GamesInteractor;
 import com.android.teaching.miprimeraapp.login.view.LoginActivity;
 
 import java.util.ArrayList;
@@ -52,8 +53,14 @@ public class ListActivity extends AppCompatActivity {
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                // Abrir activity de detalle
+                Intent intent = new Intent(ListActivity.this,
+                        GameDetailActivity.class);
+                int gameId = new GamesInteractor().getGames().get(position).getId();
+                intent.putExtra("game_id", gameId);
+                startActivity(intent);
             }
         });
     }
