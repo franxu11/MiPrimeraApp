@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.android.teaching.miprimeraapp.interactors.GamesInteractor;
 import com.android.teaching.miprimeraapp.login.view.LoginActivity;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity {
@@ -37,6 +39,11 @@ public class ListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        //Creo directorio en el almacenamiento externo.
+        getExternalFilesDir(null);
+
+
 
         gameNames.add("Overwatch");
         gameNames.add("League of Legends");
@@ -58,11 +65,21 @@ public class ListActivity extends AppCompatActivity {
                 // Abrir activity de detalle
                 Intent intent = new Intent(ListActivity.this,
                         GameDetailActivity.class);
-                int gameId = new GamesInteractor().getGames().get(position).getId();
-                intent.putExtra("game_id", gameId);
+
+                intent.putExtra("position", position);
                 startActivity(intent);
             }
         });
+        /* NO PROCEDE PARA EL FUNCIONAMIENTO DE LA APP, ES SOLO PARA VER DONDE ES LA RUTA DE MI ALMACENAMIENTO
+        EN ESTE DISPOSITIVO
+        File directorioInterno = getFilesDir();
+        File directorioCache = getCacheDir();
+        Log.d("ListActivity", "Interno: " + directorioInterno);
+        Log.d("ListActivity", "Cache: " + directorioCache);
+        */
+
+
+
     }
 
     @Override

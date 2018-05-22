@@ -2,6 +2,10 @@ package com.android.teaching.miprimeraapp;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.android.teaching.miprimeraapp.fragments.GameDetailFragment;
 import com.android.teaching.miprimeraapp.model.GameModel;
 import com.android.teaching.miprimeraapp.presenters.GameDetailPresenter;
 import com.android.teaching.miprimeraapp.view.GameDetailView;
@@ -18,8 +23,8 @@ public class GameDetailActivity extends AppCompatActivity
     implements GameDetailView {
 
     private GameDetailPresenter presenter;
-    private int currentGameId;
-    private String currentGameWebsite;
+    private int currentPosition;
+    private MyPagerAdapter myPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,40 +37,70 @@ public class GameDetailActivity extends AppCompatActivity
 
         presenter = new GameDetailPresenter();
 
-        currentGameId = getIntent().getIntExtra("game_id", 0);
+        currentPosition = getIntent().getIntExtra("position", 0);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         presenter.startPresenting(this);
-        presenter.loadGameWithId(currentGameId);
+
+        final ViewPager myViewPager = findViewById(R.id.view_pager);
+        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
+        myViewPager.setAdapter(myPagerAdapter);
+        myViewPager.setCurrentItem(currentPosition);
+        getSupportActionBar().setTitle(myPagerAdapter.getPageTitle(currentPosition));
+        myViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //Cambio el titulo de la toolbar con el que obtengo el Adapter
+                getSupportActionBar().setTitle(myPagerAdapter.getPageTitle(position));
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
     @Override
     public void onGameLoaded(GameModel game) {
-        // UPDATE VIEW WITH GAME MODEL DATA
-        ImageView icono = findViewById(R.id.game_icon);
-        icono.setImageResource(game.getIconDrawable());
 
-        // 1. CAMBIAR IMAGEN DE FONDO
-        LinearLayout fondoLayout = findViewById(R.id.game_image_container);
-        fondoLayout.setBackgroundResource(game.getBackgroundDrawable());
-
-        // 2. CAMBIAR DESCRIPCION
-        TextView descriptionTextView = findViewById(R.id.game_description);
-        descriptionTextView.setText(game.getDescription());
-
-        // 3. CAMBIAR TITULO DE LA TOOLBAR
-        getSupportActionBar().setTitle(game.getName());
-
-        this.currentGameWebsite = game.getOfficialWebsiteUrl();
     }
 
     public void goToWebsite(View view) {
-        Intent websiteIntent = new Intent(Intent.ACTION_VIEW,
-                Uri.parse(currentGameWebsite));
-        startActivity(websiteIntent);
+
+    }
+
+    private class MyPagerAdapter extends FragmentStatePagerAdapter {
+
+        public MyPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            int gameId = presenter.getGames().get(position).getId();
+            return GameDetailFragment.newInstance(gameId);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return presenter.getGames().get(position).getName();
+        }
+
+        @Override
+        public int getCount() {
+            return presenter.getGames().size();
+        }
     }
 }
 

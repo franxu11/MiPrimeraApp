@@ -1,8 +1,15 @@
 package com.android.teaching.miprimeraapp;
 
 import android.app.DatePickerDialog;
+import android.arch.persistence.room.Room;
+import android.arch.persistence.room.RoomDatabase;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteConstraintException;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -14,10 +21,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import java.io.File;
+import java.sql.SQLClientInfoException;
 import java.util.Calendar;
+
+import databaseApp.AppDatabase;
+import databaseApp.User;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -28,6 +41,28 @@ public class ProfileActivity extends AppCompatActivity {
     private EditText ageEditText;
     private RadioButton radioButtonMale;
     private RadioButton radioButtonFemale;
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.user_preferences),
+                Context.MODE_PRIVATE
+        );
+        String savedUsername = sharedPref.getString("username_key", "");
+        String savedEmail = sharedPref.getString("email_key", "");
+        //int savedAge = sharedPref.getInt("age_key", 0);
+        String savedAge = sharedPref.getString("age_key", "");
+        String savedMale = sharedPref.getString("male_key", "");
+        String savedFemale = sharedPref.getString("female_key", "");
+
+        usernameEditText.setText(savedUsername);
+        emailEditText.setText(savedEmail);
+        ageEditText.setText(savedAge);
+        radioButtonMale.setChecked(false);
+        radioButtonFemale.setChecked(false);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +98,22 @@ public class ProfileActivity extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        //Añadiendo Imagen de perfil:
+        if (isExternalStorageReadable()) {
+
+            File imgFile = new File(getExternalFilesDir(null), "profileimg.png");
+            if (imgFile.exists()) {
+                ImageView myImage = findViewById(R.id.profile_img_view); //Añadido al XML
+                myImage.setImageURI(Uri.fromFile(imgFile));
+            }
+        }
+
+
+        //Para comprobar en logcat que tengo memoria externa y puedo hacer uso de ella, no es esencial en el programa.
+        Log.d("ProfileActivity", "Existe y puedo escribir? " + isExternalStorageWritable());
+        Log.d("ProfileActivity", "Existe y puedo leer? " + isExternalStorageReadable());
+
     }
 
     @Override
@@ -102,10 +153,23 @@ public class ProfileActivity extends AppCompatActivity {
             // El usuario ha seleccionado "M"
             Log.d("ProfileActivity", "Gender: female");
         }
+
+        AppDatabase db = Room.databaseBuilder(getApplicationContext(),
+                AppDatabase.class, "databaseApp")
+                .allowMainThreadQueries()
+                .build();
+        try {
+            User user = new User();
+            db.userDao().insert(user);
+        } catch (SQLiteConstraintException ex) {
+            Toast.makeText(ProfileActivity.this, "Error al ingresar el usuario",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     public void guardarDatos(View view) {
         saveInternal();
+
     }
 
     /**
@@ -139,7 +203,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // El usuario ha pulsado el botón "CANCELAR"
-                Toast.makeText(ProfileActivity.this, "Candelando...",
+                Toast.makeText(ProfileActivity.this, "Cancelando...",
                         Toast.LENGTH_LONG).show();
             }
         });
@@ -148,13 +212,46 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    protected void onStop() {
+        super.onStop();
 
+        /**
+         * Creo un SharedPreferences para que guarde los datos en caso de que se pare la app
+         */
+        SharedPreferences sharedPref = getSharedPreferences(
+                getString(R.string.user_preferences),
+                Context.MODE_PRIVATE
+        );
+        SharedPreferences.Editor myEditor = sharedPref.edit();
+        myEditor.putString("username_key", usernameEditText.getText().toString());
+        myEditor.putString("email_key", emailEditText.getText().toString());
+        //myEditor.putInt("age_key", Integer.parseInt(ageEditText.getText().toString()));
+        myEditor.putString("age_key", ageEditText.getText().toString());
+        myEditor.putString("radiomale_key", radioButtonMale.getText().toString());
+        myEditor.putString("radiofemale_key", radioButtonFemale.getText().toString());
+        myEditor.apply();
 
+    }
 
+    //Comprobar el estado del almacenamiento interno:
 
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
 
-
-
-
-
+    //Comprobar que existe y se puede leer:
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state))
+        {
+            return true;
+        }
+        return false;
+    }
 }
